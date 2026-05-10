@@ -35,17 +35,20 @@ export function addBalance(acct: string, amount: number): number {
   return getBalance(acct);
 }
 
-/** メッセージ中で1回しか出現しない文字数 × 0.1P を付与して獲得量を返す。記号・句読点は除外。 */
+/** ユニーク文字数 × 0.1P を付与して獲得量を返す。
+ *  「繰り返し文字のみ」で構成された括弧ブロック（例: 「もももも」）は事前に除去する。 */
 export function textReward(acct: string, text: string): { reward: number; count: number } {
-  // 記号・句読点・スペース・制御文字を除去
-  const stripped = text.replace(/[\s\p{P}\p{S}]/gu, '');
+  // 「〜」の中身が全て同じ文字の繰り返しなら除去（括弧ごと）
+  const stripped = text
+    .replace(/「([^」]+)」/g, (match, inner) => {
+      const chars = [...inner];
+      return chars.length > 0 && chars.every(c => c === chars[0]) ? '' : match;
+    })
+    .replace(/\s/g, '');
 
-  // 1回だけ出現する文字のみカウント
-  const freq = new Map<string, number>();
-  for (const ch of stripped) freq.set(ch, (freq.get(ch) ?? 0) + 1);
-  const count = [...freq.values()].filter(v => v === 1).length;
-
+  const count = new Set(stripped).size;
   if (count === 0) return { reward: 0, count: 0 };
+
   const reward = round1(count * 0.1);
   addBalance(acct, reward);
   return { reward, count };
