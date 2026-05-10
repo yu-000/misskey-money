@@ -25,10 +25,10 @@ if ! command -v pm2 &>/dev/null; then
   npm install -g pm2
 fi
 
-# インストール先にコピー
+# インストール先にコピー（古いファイルを削除してから上書き）
 echo "[info] $INSTALL_DIR にファイルをコピーします..."
 sudo mkdir -p "$INSTALL_DIR"
-sudo cp -r . "$INSTALL_DIR/"
+sudo rsync -a --delete --exclude='.env' --exclude='data/' --exclude='node_modules/' --exclude='logs/' . "$INSTALL_DIR/"
 sudo chown -R "$USER":"$USER" "$INSTALL_DIR"
 
 cd "$INSTALL_DIR"
