@@ -31,11 +31,11 @@ export function dispatch(ctx: CommandContext): string | null {
   const cmd = parts[0]?.toLowerCase() ?? '';
   const args = parts.slice(1);
 
-  // ユニーク文字ポイントを付与（コマンドテキスト全体を対象）
+  // 1回だけ出現する文字 × 0.1P を付与（記号・句読点・繰り返し文字は除外）
   const currency = process.env.CURRENCY_NAME ?? 'コイン';
-  const earned = textReward(ctx.acct, cleaned);
+  const { reward: earned, count: earnedCount } = textReward(ctx.acct, cleaned);
   const earnedSuffix = earned > 0
-    ? `\n✏️ +${earned} ${currency} (${new Set(cleaned.replace(/\s/g, '')).size}文字)`
+    ? `\n✏️ +${earned} ${currency} (${earnedCount}文字)`
     : '';
 
   let result: string | null = null;
