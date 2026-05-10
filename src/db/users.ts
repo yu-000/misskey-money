@@ -54,18 +54,6 @@ export function textReward(acct: string, text: string): { reward: number; count:
   return { reward, count };
 }
 
-export function transfer(fromAcct: string, toAcct: string, amount: number): void {
-  const now = new Date().toISOString();
-  db.transaction(() => {
-    getOrCreate(fromAcct);
-    getOrCreate(toAcct);
-    db.prepare('UPDATE users SET balance = ROUND(balance - ?, 1) WHERE acct = ?').run(amount, fromAcct);
-    db.prepare('UPDATE users SET balance = ROUND(balance + ?, 1) WHERE acct = ?').run(amount, toAcct);
-    db.prepare(
-      'INSERT INTO transactions (from_acct, to_acct, amount, created_at) VALUES (?, ?, ?, ?)'
-    ).run(fromAcct, toAcct, amount, now);
-  })();
-}
 
 export function claimDaily(acct: string, baseAmount: number): { claimed: false } | { claimed: true; amount: number; streak: number } {
   const user = getOrCreate(acct);

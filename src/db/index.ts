@@ -20,13 +20,6 @@ db.exec(`
     quiz_expires_at TEXT
   );
 
-  CREATE TABLE IF NOT EXISTS transactions (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    from_acct  TEXT NOT NULL,
-    to_acct    TEXT NOT NULL,
-    amount     REAL NOT NULL,
-    created_at TEXT NOT NULL
-  );
 `);
 
 export default db;

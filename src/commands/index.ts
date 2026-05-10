@@ -1,5 +1,4 @@
 import { balance } from './balance.js';
-import { send } from './send.js';
 import { daily } from './daily.js';
 import { ranking } from './ranking.js';
 import { help } from './help.js';
@@ -44,11 +43,6 @@ export function dispatch(ctx: CommandContext): string | null {
     case '残高':
     case 'balance':
       result = balance(ctx.acct);
-      break;
-
-    case '送金':
-    case 'send':
-      result = send(ctx.acct, args, ctx.botUsername);
       break;
 
     case 'デイリー':

@@ -6,9 +6,6 @@ export function help(): string {
 💰 残高 / balance
   ${currency}残高を確認
 
-📤 送金 @ユーザー 金額 / send @user 金額
-  他のユーザーに${currency}を送る
-
 🎁 デイリー / daily
   1日1回ボーナス (${daily}${currency}〜、連続日数でUP)
 
