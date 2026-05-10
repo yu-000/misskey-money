@@ -46,6 +46,7 @@ fi
 
 # 依存パッケージインストール・ビルド
 echo "[info] 依存パッケージをインストールします..."
+rm -f pnpm-lock.yaml
 pnpm install
 
 echo "[info] ビルドします..."
