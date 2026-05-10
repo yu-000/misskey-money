@@ -46,7 +46,7 @@ fi
 
 # 依存パッケージインストール・ビルド
 echo "[info] 依存パッケージをインストールします..."
-pnpm install --frozen-lockfile
+pnpm install
 
 echo "[info] ビルドします..."
 pnpm build
